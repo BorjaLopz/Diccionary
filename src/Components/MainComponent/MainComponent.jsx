@@ -1,5 +1,16 @@
 import { useState } from "react";
 import "./styles.css";
+import NoWordFoundComponent from "../NoWordFoundComponent/NoWordFoundComponent";
+import LoadingComponent from "../../LoadingComponent/LoadingComponent";
+import WordComponent from "../WordComponent/WordComponent";
+
+const options = {
+  method: "GET",
+  headers: {
+    "X-RapidAPI-Key": "4dee4cdc81msh2b38413c17134e5p1a635cjsne9c7d8dbee2c",
+    "X-RapidAPI-Host": "lexicala1.p.rapidapi.com",
+  },
+};
 
 const options_2 = {
   method: "GET",
@@ -9,7 +20,7 @@ const options_2 = {
   },
 };
 
-const options = {
+const options_3 = {
   method: "GET",
   headers: {
     "X-RapidAPI-Key": "d760d22cd1msh39217c657c77351p1a2f58jsn98b2ea35e969",
@@ -21,13 +32,18 @@ function MainComponent() {
   const [word, setWord] = useState("");
   const [wordHeadwordPronunciation, setWordHeadwordPronunciation] = useState();
   const [wordMeaning, setWordMeaning] = useState();
+  const [clicked, setClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleInput = (e) => {
     setWord(e.target.value.toLowerCase());
   };
 
-  const handleClick = async () => {
+  const handleClick = async (e) => {
+    e.preventDefault();
     try {
+      setClicked(true);
+
       const resp = await fetch(
         `https://lexicala1.p.rapidapi.com/search-entries?text=${word}`,
         options
@@ -38,19 +54,27 @@ function MainComponent() {
         `https://lexicala1.p.rapidapi.com/search?text=${word}&language=es`,
         options
       );
-
+      setLoading(false);
       const dataMeaning = await respMeaning.json();
 
       // console.log(data.results[0]);
       // console.log(dataMeaning.results);
 
       setWordHeadwordPronunciation(data.results);
-
       setWordMeaning(dataMeaning.results[0]);
+      console.log("wordHeadwordPronunciation");
+      console.log(wordHeadwordPronunciation);
+      console.log("wordMeaning");
+      console.log(wordMeaning);
     } catch (e) {
       console.error(e);
     }
   };
+
+  console.log("wordHeadwordPronunciation");
+  console.log(wordHeadwordPronunciation);
+  console.log("wordMeaning");
+  console.log(wordMeaning);
 
   return (
     <article>
@@ -65,40 +89,15 @@ function MainComponent() {
           <button type="submit">Buscar</button>
         </form>
       </section>
-
-      <section id="wordMeaningSection">
-        <section id="wordSection">
-          <section id="wordTypeOfWord">
-            <h3>{wordMeaning?.headword?.text}</h3>
-            <h4>{wordMeaning?.headword?.pos}</h4>
-          </section>
-          <section id="wordPronuctiation">
-            {wordHeadwordPronunciation !== undefined ? (
-              <>
-                <h3>Pronunciación</h3>
-                <h4>
-                  {wordHeadwordPronunciation[0]?.headword?.pronunciation?.value}
-                </h4>
-              </>
-            ) : (
-              ""
-            )}
-          </section>
-        </section>
-
-        <section id="meaningSection">
-          <ol>
-            {wordMeaning &&
-              wordMeaning.senses.map((w) => {
-                return (
-                  <li>
-                    <p>{w.definition}</p>
-                  </li>
-                );
-              })}
-          </ol>
-        </section>
-      </section>
+      {loading ? (
+        <LoadingComponent clicked={clicked} />
+      ) : (
+        <WordComponent
+          wordMeaning={wordMeaning}
+          wordHeadwordPronunciation={wordHeadwordPronunciation}
+          clicked={clicked}
+        />
+      )}
     </article>
   );
 }

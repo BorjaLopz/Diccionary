@@ -1,0 +1,14 @@
+#notFoundWord {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 75%;
+  height: 8rem;
+}
+
+#notFoundWord p {
+  font-size: 1.8rem;
+  font-weight: 400;
+  font-style: italic;
+}
