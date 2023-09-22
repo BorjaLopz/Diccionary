@@ -26,7 +26,8 @@ function MainComponent() {
     setWord(e.target.value.toLowerCase());
   };
 
-  const handleClick = async () => {
+  const handleClick = async (e) => {
+    e.preventDefault();
     try {
       const resp = await fetch(
         `https://lexicala1.p.rapidapi.com/search-entries?text=${word}`,
