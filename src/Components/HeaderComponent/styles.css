@@ -1,0 +1,10 @@
+section img {
+  max-width: 10rem;
+}
+
+header section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}

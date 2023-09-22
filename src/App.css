@@ -3,6 +3,22 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  width: 1280px;
+
+  display: flex;
+  flex-direction: column;
+  /* min-height: 80vh; */
+
+  gap: 3rem;
+}
+
+header,
+footer {
+  flex: 0;
+}
+
+main {
+  flex: 1;
 }
 
 .logo {
