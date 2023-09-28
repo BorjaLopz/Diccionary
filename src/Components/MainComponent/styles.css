@@ -52,7 +52,7 @@ main article {
 #wordMeaningSection {
   display: flex;
   flex-direction: column;
-
+  width: 65%;
   gap: 1rem;
 }
 
